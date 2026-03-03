@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AXION PRO MAX - Habits">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Habits — AXION PRO MAX</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237c3aed' width='192' height='192' rx='32'/><text x='96' y='130' font-size='100' text-anchor='middle' fill='white' font-family='system-ui'>A</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="habits">
+  
+  <div class="splash-screen" id="splash-screen">
+    <div class="splash-logo">AXION</div>
+    <div class="splash-tagline">Anti-Gravity Productivity Suite</div>
+    <div class="splash-loader">
+      <div class="splash-loader-bar"></div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">A</div>
+          <span class="logo-text">AXION</span>
+        </div>
+        <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="dashboard.html" class="nav-item">
+            <div class="nav-item-icon">📊</div>
+            <span class="nav-item-text">Dashboard</span>
+          </a>
+          <a href="tasks.html" class="nav-item">
+            <div class="nav-item-icon">✅</div>
+            <span class="nav-item-text">Tasks</span>
+          </a>
+          <a href="calendar.html" class="nav-item">
+            <div class="nav-item-icon">📅</div>
+            <span class="nav-item-text">Calendar</span>
+          </a>
+          <a href="habits.html" class="nav-item active">
+            <div class="nav-item-icon">🎯</div>
+            <span class="nav-item-text">Habits</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Tools</div>
+          <a href="focus.html" class="nav-item">
+            <div class="nav-item-icon">⚡</div>
+            <span class="nav-item-text">Focus Mode</span>
+          </a>
+          <a href="notes.html" class="nav-item">
+            <div class="nav-item-icon">📝</div>
+            <span class="nav-item-text">Notes</span>
+          </a>
+          <a href="analytics.html" class="nav-item">
+            <div class="nav-item-icon">📈</div>
+            <span class="nav-item-text">Analytics</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">System</div>
+          <a href="settings.html" class="nav-item">
+            <div class="nav-item-icon">⚙️</div>
+            <span class="nav-item-text">Settings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      
+      <header class="header">
+        <div class="header-left">
+          <h1 class="header-title">Habits</h1>
+        </div>
+        
+        <div class="header-right">
+          <button class="btn btn-primary" id="add-habit-btn">
+            <span>+</span> New Habit
+          </button>
+        </div>
+      </header>
+      
+      <div class="content-wrapper">
+        
+        <!-- Stats -->
+        <div class="grid grid-3 mb-lg">
+          <div class="card stat-card">
+            <div class="stat-value" id="habit-total">0</div>
+            <div class="stat-label">Total Habits</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-value" id="habit-completed">0</div>
+            <div class="stat-label">Completed Today</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-value" id="habit-streak">0</div>
+            <div class="stat-label">Total Streak Days</div>
+          </div>
+        </div>
+        
+        <!-- Progress -->
+        <div class="card mb-lg">
+          <div class="flex justify-between items-center mb-md">
+            <h4>Today's Progress</h4>
+            <span class="text-secondary" id="habit-progress-text">0/0 completed</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" id="habit-progress" style="width: 0%"></div>
+          </div>
+        </div>
+        
+        <!-- Habit List -->
+        <div class="card mb-lg">
+          <h4 class="mb-md">Your Habits</h4>
+          <div id="habit-list">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+        
+        <!-- Streak Calendar -->
+        <div class="card">
+          <h4 class="mb-md">Streak Calendar</h4>
+          <p class="text-secondary mb-md">Your activity over the past 8 weeks</p>
+          <div id="streak-calendar">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+        
+      </div>
+    </main>
+  </div>
+
+  <button class="quick-add-btn ripple" onclick="Habits.openModal()" title="Add new habit">
+    +
+  </button>
+
+  <!-- Habit Modal -->
+  <div class="modal-overlay" id="habit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New Habit</h3>
+        <button class="modal-close" id="habit-modal-close" title="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="habit-form">
+          <div class="form-group">
+            <label class="form-label">Habit Name *</label>
+            <input type="text" class="form-input" id="habit-name" placeholder="e.g., Exercise, Read, Meditate" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Goal (optional)</label>
+            <input type="text" class="form-input" id="habit-goal" placeholder="e.g., 30 minutes, 10 pages">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Frequency</label>
+            <select class="form-input" id="habit-frequency">
+              <option value="daily" selected>Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          
+          <div class="flex justify-between mt-lg">
+            <button type="button" class="btn btn-ghost" onclick="Habits.closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Habit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-banner" id="install-banner">
+    <div class="install-banner-icon">📲</div>
+    <div class="install-banner-text">
+      <div class="install-banner-title">Install AXION</div>
+      <div class="install-banner-subtitle">Add to home screen for the full experience</div>
+    </div>
+    <div class="install-banner-actions">
+      <button class="btn btn-ghost btn-sm" onclick="InstallBanner.hide()">Dismiss</button>
+      <button class="btn btn-primary btn-sm" onclick="InstallBanner.install()">Install</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/habits.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AXION PRO MAX - Tasks">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Tasks — AXION PRO MAX</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237c3aed' width='192' height='192' rx='32'/><text x='96' y='130' font-size='100' text-anchor='middle' fill='white' font-family='system-ui'>A</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="tasks">
+  
+  <div class="splash-screen" id="splash-screen">
+    <div class="splash-logo">AXION</div>
+    <div class="splash-tagline">Anti-Gravity Productivity Suite</div>
+    <div class="splash-loader">
+      <div class="splash-loader-bar"></div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">A</div>
+          <span class="logo-text">AXION</span>
+        </div>
+        <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="dashboard.html" class="nav-item">
+            <div class="nav-item-icon">📊</div>
+            <span class="nav-item-text">Dashboard</span>
+          </a>
+          <a href="tasks.html" class="nav-item active">
+            <div class="nav-item-icon">✅</div>
+            <span class="nav-item-text">Tasks</span>
+          </a>
+          <a href="calendar.html" class="nav-item">
+            <div class="nav-item-icon">📅</div>
+            <span class="nav-item-text">Calendar</span>
+          </a>
+          <a href="habits.html" class="nav-item">
+            <div class="nav-item-icon">🎯</div>
+            <span class="nav-item-text">Habits</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Tools</div>
+          <a href="focus.html" class="nav-item">
+            <div class="nav-item-icon">⚡</div>
+            <span class="nav-item-text">Focus Mode</span>
+          </a>
+          <a href="notes.html" class="nav-item">
+            <div class="nav-item-icon">📝</div>
+            <span class="nav-item-text">Notes</span>
+          </a>
+          <a href="analytics.html" class="nav-item">
+            <div class="nav-item-icon">📈</div>
+            <span class="nav-item-text">Analytics</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">System</div>
+          <a href="settings.html" class="nav-item">
+            <div class="nav-item-icon">⚙️</div>
+            <span class="nav-item-text">Settings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      
+      <header class="header">
+        <div class="header-left">
+          <h1 class="header-title">Tasks</h1>
+        </div>
+        
+        <div class="header-search">
+          <svg class="header-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input type="text" id="task-search" placeholder="Search tasks...">
+          <span class="header-search-shortcut">/</span>
+        </div>
+        
+        <div class="header-right">
+          <select id="task-sort" class="form-input" style="width: auto; padding: 8px 12px;">
+            <option value="date">Sort by Date</option>
+            <option value="priority">Sort by Priority</option>
+            <option value="dueDate">Sort by Due Date</option>
+          </select>
+          <button class="btn btn-primary" id="add-task-btn">
+            <span>+</span> Add Task
+          </button>
+        </div>
+      </header>
+      
+      <div class="content-wrapper">
+        
+        <!-- Filters -->
+        <div class="card mb-lg">
+          <div class="flex justify-between items-center">
+            <div class="tabs" id="filter-tabs">
+              <!-- Dynamically rendered -->
+            </div>
+            <div class="flex gap-sm items-center">
+              <span class="text-secondary" id="task-stats">0/0 completed</span>
+              <button class="btn btn-ghost btn-sm" id="delete-completed">Clear Completed</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Task List -->
+        <div id="task-list">
+          <!-- Dynamically rendered -->
+        </div>
+        
+      </div>
+    </main>
+  </div>
+
+  <button class="quick-add-btn ripple" onclick="Tasks.openModal()" title="Add new task">
+    +
+  </button>
+
+  <!-- Task Modal -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="task-modal-title">Add New Task</h3>
+        <button class="modal-close" id="task-modal-close" title="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="task-form">
+          <div class="form-group">
+            <label class="form-label">Task Title *</label>
+            <input type="text" class="form-input" id="task-title" placeholder="What needs to be done?" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-input" id="task-description" placeholder="Add more details..."></textarea>
+          </div>
+          
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Due Date</label>
+              <input type="date" class="form-input" id="task-due-date">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-input" id="task-priority">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <input type="text" class="form-input" id="task-category" placeholder="e.g., Work, Personal">
+          </div>
+          
+          <div class="flex justify-between mt-lg">
+            <button type="button" class="btn btn-ghost" onclick="Tasks.closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-banner" id="install-banner">
+    <div class="install-banner-icon">📲</div>
+    <div class="install-banner-text">
+      <div class="install-banner-title">Install AXION</div>
+      <div class="install-banner-subtitle">Add to home screen for the full experience</div>
+    </div>
+    <div class="install-banner-actions">
+      <button class="btn btn-ghost btn-sm" onclick="InstallBanner.hide()">Dismiss</button>
+      <button class="btn btn-primary btn-sm" onclick="InstallBanner.install()">Install</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/tasks.js"></script>
+</body>
+</html>

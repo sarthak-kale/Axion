@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AXION PRO MAX - Analytics">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Analytics — AXION PRO MAX</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237c3aed' width='192' height='192' rx='32'/><text x='96' y='130' font-size='100' text-anchor='middle' fill='white' font-family='system-ui'>A</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .analytics-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    
+    .analytics-stat {
+      text-align: center;
+      padding: 1rem;
+    }
+    
+    .analytics-stat-value {
+      font-family: 'Sora', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .analytics-stat-label {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+    
+    .heatmap-container {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 1rem 0;
+    }
+    
+    .heatmap-week {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .heatmap-cell-label {
+      font-size: 0.625rem;
+      color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+      height: 14px;
+    }
+    
+    .heatmap-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body data-page="analytics">
+  
+  <div class="splash-screen" id="splash-screen">
+    <div class="splash-logo">AXION</div>
+    <div class="splash-tagline">Anti-Gravity Productivity Suite</div>
+    <div class="splash-loader">
+      <div class="splash-loader-bar"></div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">A</div>
+          <span class="logo-text">AXION</span>
+        </div>
+        <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('collapsed')" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="dashboard.html" class="nav-item">
+            <div class="nav-item-icon">📊</div>
+            <span class="nav-item-text">Dashboard</span>
+          </a>
+          <a href="tasks.html" class="nav-item">
+            <div class="nav-item-icon">✅</div>
+            <span class="nav-item-text">Tasks</span>
+          </a>
+          <a href="calendar.html" class="nav-item">
+            <div class="nav-item-icon">📅</div>
+            <span class="nav-item-text">Calendar</span>
+          </a>
+          <a href="habits.html" class="nav-item">
+            <div class="nav-item-icon">🎯</div>
+            <span class="nav-item-text">Habits</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Tools</div>
+          <a href="focus.html" class="nav-item">
+            <div class="nav-item-icon">⚡</div>
+            <span class="nav-item-text">Focus Mode</span>
+          </a>
+          <a href="notes.html" class="nav-item">
+            <div class="nav-item-icon">📝</div>
+            <span class="nav-item-text">Notes</span>
+          </a>
+          <a href="analytics.html" class="nav-item active">
+            <div class="nav-item-icon">📈</div>
+            <span class="nav-item-text">Analytics</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">System</div>
+          <a href="settings.html" class="nav-item">
+            <div class="nav-item-icon">⚙️</div>
+            <span class="nav-item-text">Settings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      
+      <header class="header">
+        <div class="header-left">
+          <h1 class="header-title">Analytics</h1>
+        </div>
+        
+        <div class="header-right">
+          <button class="btn btn-ghost" id="refresh-analytics">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+          </button>
+          <button class="btn btn-secondary" id="export-analytics">Export Data</button>
+        </div>
+      </header>
+      
+      <div class="content-wrapper">
+        
+        <!-- Productivity Score -->
+        <div class="card mb-lg">
+          <div class="card-header">
+            <h4>Productivity Score</h4>
+          </div>
+          <div class="productivity-score" id="productivity-score" style="width: 200px; height: 200px;">
+            <svg class="productivity-score-circle" width="200" height="200" viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="scoreGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+              <circle class="productivity-score-bg" cx="100" cy="100" r="85" stroke-width="12"/>
+              <circle class="productivity-score-progress" cx="100" cy="100" r="85" stroke-width="12" stroke="url(#scoreGradient2)"/>
+            </svg>
+            <div class="productivity-score-value" style="font-size: 3rem;">0%</div>
+            <div class="stat-label" style="margin-top: 4rem;">Getting started</div>
+          </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="analytics-grid mb-lg">
+          
+          <div class="analytics-card">
+            <h4 class="mb-md">Tasks</h4>
+            <div class="grid grid-2">
+              <div class="analytics-stat">
+                <div class="analytics-stat-value" id="analytics-tasks-total">0</div>
+                <div class="analytics-stat-label">Total Tasks</div>
+              </div>
+              <div class="analytics-stat">
+                <div class="analytics-stat-value" id="analytics-tasks-completed">0</div>
+                <div class="analytics-stat-label">Completed</div>
+              </div>
+            </div>
+            <div class="progress mt-md">
+              <div class="progress-bar" id="task-progress" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div class="analytics-card">
+            <h4 class="mb-md">Focus Sessions</h4>
+            <div class="grid grid-2">
+              <div class="analytics-stat">
+                <div class="analytics-stat-value" id="focus-sessions">0</div>
+                <div class="analytics-stat-label">Sessions</div>
+              </div>
+              <div class="analytics-stat">
+                <div class="analytics-stat-value"><span id="focus-hours">0</span>h <span id="focus-minutes">0</span>m</div>
+                <div class="analytics-stat-label">Total Time</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analytics-card">
+            <h4 class="mb-md">Habits</h4>
+            <div class="grid grid-2">
+              <div class="analytics-stat">
+                <div class="analytics-stat-value" id="analytics-habits-total">0</div>
+                <div class="analytics-stat-label">Total Habits</div>
+              </div>
+              <div class="analytics-stat">
+                <div class="analytics-stat-value">
+                  <span id="streak-current">0</span> / <span id="streak-longest">0</span>
+                </div>
+                <div class="analytics-stat-label">Current / Longest Streak</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analytics-card">
+            <h4 class="mb-md">Notes</h4>
+            <div class="analytics-stat">
+              <div class="analytics-stat-value" id="analytics-notes-total">0</div>
+              <div class="analytics-stat-label">Total Notes</div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Activity Heatmap -->
+        <div class="card">
+          <h4 class="mb-md">Activity Heatmap</h4>
+          <p class="text-secondary mb-md">Your productivity over the past 16 weeks</p>
+          <div id="activity-heatmap">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+        
+      </div>
+    </main>
+  </div>
+
+  <div class="install-banner" id="install-banner">
+    <div class="install-banner-icon">📲</div>
+    <div class="install-banner-text">
+      <div class="install-banner-title">Install AXION</div>
+      <div class="install-banner-subtitle">Add to home screen for the full experience</div>
+    </div>
+    <div class="install-banner-actions">
+      <button class="btn btn-ghost btn-sm" onclick="InstallBanner.hide()">Dismiss</button>
+      <button class="btn btn-primary btn-sm" onclick="InstallBanner.install()">Install</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
